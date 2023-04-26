@@ -91,7 +91,7 @@ def process_trips(spark, input_data, output_data):
     print("Saving trips table...")
     trips_table.write.partitionBy("year", "month").mode("overwrite").parquet(os.path.join(output_data, "trips/"))
     print("Saving trips mapping table...")
-    #trips_mapping_table.write.partitionBy("pickup_area").mode("overwrite").parquet(os.path.join(output_data, "trips_mapping/"))
+    trips_mapping_table.write.partitionBy("pickup_area").mode("overwrite").parquet(os.path.join(output_data, "trips_mapping/"))
     print("Saving time table...")
     time_table.write.partitionBy("year", "month").mode("overwrite").parquet(os.path.join(output_data, "time/"))
 
@@ -181,12 +181,12 @@ def main():
     """
     
     spark = create_spark_session()
+    
+    # Uncomment local storage vs S3 storage
     input_data = "data/"
-    #input_data = "s3a://dendbucketin/data"
-    ##uncomment to save parquet files locally
+    #input_data = "s3a://xxx/data"
     #output_data = "data/"
-    ##uncomment to load parquet files to S3 | put in "s3a://xxx/" bucket name
-    output_data = "s3a://dendbucketout/"
+    output_data = "s3a://xxx/"
     
     process_trips(spark, input_data, output_data)    
     process_weather(spark, input_data, output_data)
