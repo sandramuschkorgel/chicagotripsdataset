@@ -4,7 +4,7 @@ from etl import create_spark_session
 spark = create_spark_session()
 
 # Read in cleaned data files
-trips = spark.read.parquet("data/trips_cleaned/*/*/*")
+trips = spark.read.parquet("data/trips/*/*/*")
 time = spark.read.parquet("data/time/*/*/*")
 weather = spark.read.option("header", "true").csv("data/weather_cleaned.csv")
 communities = spark.read.option("header", "true").csv("data/communities_cleaned.csv")
@@ -42,7 +42,7 @@ spark.sql("""
     JOIN communities_table
     ON trips_table.pickup_area = communities_table.id
     LIMIT 5
-""")#.show()
+""").show()
 
 
 # Trips mapping
@@ -56,5 +56,5 @@ spark.sql("""
     GROUP BY dropoff_area
     ORDER BY trips_count DESC
     LIMIT 10
-""").show()
+""")#.show()
 
